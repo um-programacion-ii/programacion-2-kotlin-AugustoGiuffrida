@@ -13,20 +13,42 @@ class Coche (private var _marca: String = "Ford", private var _modelo: Int = 202
     var marca: String
     get() = _marca
     set(value){
-        marca = value
+        _marca = value
     }
 
     var modelo: Int
     get() = _modelo
     set(value){
-        modelo = value
+        _modelo = value
+    }
+}
+
+interface Perimetrable{
+    fun calcularPerimetro(): Double
+    fun describir()
+}
+
+class Circulo(val radio: Int): Perimetrable{
+    var area: Double
+
+    init{
+        area = Math.PI*radio*radio
+        println("Se ha creado un circulo de radio $radio con un área de $area")
+    }
+
+    override fun describir() {
+        println("Este es un circulo.")
+    }
+
+    override fun calcularPerimetro(): Double {
+        return 2 * Math.PI * radio
     }
 }
 
 
 // El bloque 'init' se ejecuta cuando se crea una instancia de la clase (un objeto).
 // Los 'métodos' son funciones que pertenecen a la clase y definen su comportamiento.
-class Rectangulo(val ancho: Double, val alto: Double) {
+class Rectangulo(val ancho: Double, val alto: Double): Perimetrable {
     var area: Double
 
     // El bloque init se usa para inicializar propiedades o ejecutar código en la creación.
@@ -37,12 +59,12 @@ class Rectangulo(val ancho: Double, val alto: Double) {
     }
 
     // Un método de la clase
-    fun describir() {
+    override fun describir() {
         println("Este es un rectángulo.")
     }
 
     // Un método que realiza un cálculo
-    fun calcularPerimetro(): Double {
+    override fun calcularPerimetro(): Double {
         return 2 * (ancho + alto)
     }
 }
@@ -55,7 +77,12 @@ fun main() {
     println("Modelo: ${coche.modelo}")
 
     val rectangulo = Rectangulo(10.0, 5.0)
-    println("Area ${rectangulo.area}")
-    println("Perimetro ${rectangulo.calcularPerimetro()}")
-    rectangulo.describir()
+    val circulo = Circulo(5)
+    val figuras: List<Perimetrable> = listOf(rectangulo, circulo)
+
+    for(figura in figuras){
+        figura.describir()
+        println("Perimetro: ${figura.calcularPerimetro()}")
+    }
+
 }
